@@ -12,10 +12,10 @@ class MainGUI:
         self.information['state'] = DISABLED
         # canvas 초기화하고 Info 리스트 보여주기
 
-    def InitInsert(self): #지역들 xml로부터 읽어와 combobox에 넣어주기 self.do, self.city
+    def InitInsert(self): # 지역들 xml로부터 읽어와 combobox에 넣어주기 self.do, self.city
         pass
 
-    def Search(self): #combobox로부터 선택된 값을 얻어와 해당 지역의 관광지를 listbox로 뽑음
+    def Search(self): # combobox로부터 선택된 값을 얻어와 해당 지역의 관광지를 listbox로 뽑음
         pass
 
     def __init__(self):
@@ -25,11 +25,11 @@ class MainGUI:
         self.window.geometry('1280x720')
         self.window.configure(bg= "light pink")
 
-        Label(self.window, text = "도",bg= "light pink").place(x = 20, y = 50) #충청남도 할때 도
-        Label(self.window, text = "시/군/구",bg= "light pink").place(x= 130, y = 50) #시,군,구
-        self.do = ttk.Combobox(self.window, width = 8) #도 선택 버튼
+        Label(self.window, text="도", bg="light pink").place(x = 20, y = 50)  # 충청남도 할때 도
+        Label(self.window, text="시/군/구", bg="light pink").place(x= 130, y = 50)  # 시,군,구
+        self.do = ttk.Combobox(self.window, width=8)  # 도 선택 버튼
         self.do.place(x = 20, y = 80)
-        self.city = ttk.Combobox(self.window, width = 10) # 시/군/구 선택버튼
+        self.city = ttk.Combobox(self.window, width=10)  # 시/군/구 선택버튼
         self.city.place(x = 130, y = 80)
         self.InitInsert() # 선택창에 지역 넣어주기
 
