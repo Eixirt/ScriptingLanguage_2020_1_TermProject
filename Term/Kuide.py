@@ -23,10 +23,10 @@ class MainGUI:
         self.window.iconbitmap("Kuide.ico")
         self.window.title("Kuide")
         self.window.geometry('1280x720')
-        self.window.configure(bg= "light pink")
+        self.window.configure(bg="light pink")
 
-        Label(self.window, text="도", bg="light pink").place(x = 20, y = 50)  # 충청남도 할때 도
-        Label(self.window, text="시/군/구", bg="light pink").place(x= 130, y = 50)  # 시,군,구
+        Label(self.window, text="도", bg="light pink").place(x=20, y= 50)  # 충청남도 할때 도
+        Label(self.window, text="시/군/구", bg="light pink").place(x=130, y=50)  # 시,군,구
         self.do = ttk.Combobox(self.window, width=8)  # 도 선택 버튼
         self.do.place(x = 20, y = 80)
         self.city = ttk.Combobox(self.window, width=10)  # 시/군/구 선택버튼
