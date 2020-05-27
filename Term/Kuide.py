@@ -5,12 +5,12 @@ class MainGUI:
     def Bookmark(self): #북마크 띄우기
         self.bookmark['state'] = DISABLED
         self.information['state'] = NORMAL
-        #canvas 초기화하고 book리스트보여주기
+        # canvas 초기화하고 book리스트 보여주기
 
     def Information(self): # 정보 띄우기
         self.bookmark['state'] = NORMAL
         self.information['state'] = DISABLED
-        # canvas 초기화하고 Info리스트보여주기
+        # canvas 초기화하고 Info 리스트 보여주기
 
     def InitInsert(self): #지역들 xml로부터 읽어와 combobox에 넣어주기 self.do, self.city
         pass
