@@ -48,10 +48,10 @@ class MainGUI:
 
         self.TouristDestination = Listbox(self.window, selectmode = 'multiple', width = 60, height= 30) #관광지 리스트
         self.TouristDestination.place(x= 20, y = 120)
-        self.Information = Button(self.window, text = "정보", bg = "pink", width = 8, command = self.Information) #정보 버튼
-        self.Information.place(x =  500, y =95)
-        self.Bookmark = Button(self.window, text = "북마크", bg = "pink", width = 8, command = self.Bookmark) #북마크 버튼
-        self.Bookmark.place(x = 568, y=95)
+        self.information = Button(self.window, text = "정보", bg = "pink", width = 8, command = self.Information) #정보 버튼
+        self.information.place(x =  500, y =95)
+        self.bookmark = Button(self.window, text = "북마크", bg = "pink", width = 8, command = self.Bookmark) #북마크 버튼
+        self.bookmark.place(x = 568, y=95)
 
         self.InfoandbookmarkList = Listbox(self.window, selectmode = 'multiple', width = 60, height = 15)#정보,북마크버튼 및의 정보 띄워주는 창
         self.InfoandbookmarkList.place(x = 500, y = 120)
