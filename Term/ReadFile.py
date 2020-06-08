@@ -12,12 +12,11 @@ conn.request("GET", "/openapi/service/rest/KorService/searchStay?serviceKey=2any
                     "numOfRows=" + str(numOfRows) + "&pageNo=" + str(currPage) + "&MobileOS=ETC&MobileApp=AppTest&arrange=A&listYN=Y&areaCode=&sigunguCode=&"
                                                                                  "hanOk=&benikia=&goodStay=&modifiedtime=&")
 
-
 req = conn.getresponse()
 print(req.status, req.reason)
 
 hotelListsDataTree = ElementTree.fromstring(req.read().decode('utf-8'))
-hotelList = hotelListsDataTree.getiterator("item")
+hotelList = list(hotelListsDataTree.iter("item"))
 
 # print(req.read().decode('utf-8'))
 print(hotelList)

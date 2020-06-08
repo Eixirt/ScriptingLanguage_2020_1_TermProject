@@ -1,0 +1,1 @@
+# http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeid=15&areaCode=4&sigunguCode=4&MobileOS=ETC&MobileApp=AppTesting

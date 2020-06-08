@@ -1,6 +1,9 @@
 from tkinter import *
 from tkinter import ttk #combobox 용
 
+import OpenApiDo
+import OpenApiSigungu
+
 class MainGUI:
     def SendEmail(self): #이메일 전송
         pass
@@ -19,14 +22,25 @@ class MainGUI:
         # canvas 초기화하고 Info리스트보여주기
 
     def InitInsert(self): #지역들 xml로부터 읽어와 combobox에 넣어주기 self.do, self.city
-        pass
+        dolist = ['경기도','강원도','충청북도','충청남도','전라북도',
+                  '전라남도','경상북도','경상남도', '서울','제주도',
+                  '부산','대구','인천','광주','대전','울산','세종특별자치시']
+
+        self.do['value'] = dolist
+        self.do.current(0)
 
     def Refresh(self): # 관광지 리스트박스에서 선택 후 누르면 정보 창의 정보 갱신
         pass
 
     def Search(self): #combobox로부터 선택된 값을 얻어와 해당 지역의 관광지를 listbox로 뽑음
         #리스트 박스에 해당 지역의 유명 관광지 xml로부터 이름 불러와 insert
-        pass
+        DoCode = OpenApiDo.getSidoCode(self.do.get())
+        SigunguCode = OpenApiSigungu.getSigunguCode(self.city.get())
+
+    def ChangeDo(self,event): #Do 콤보박스 내용 바꿨을 때-> 시군구 콤보박스 내용 바꾸기
+        code = OpenApiDo.getSidoCode(self.do.get())
+        self.city['value'] = OpenApiSigungu.getSigunguList(code)
+        self.city.current(0)
 
     def __init__(self):
         self.window = Tk()
@@ -35,6 +49,7 @@ class MainGUI:
         self.window.geometry('1280x720')
         self.window.configure(bg= "light pink")
 
+
         Label(self.window, text = "도",bg= "light pink").place(x = 20, y = 50) #충청남도 할때 도
         Label(self.window, text = "시/군/구",bg= "light pink").place(x= 130, y = 50) #시,군,구
         self.do = ttk.Combobox(self.window, width = 8) #도 선택 버튼
@@ -42,6 +57,7 @@ class MainGUI:
         self.city = ttk.Combobox(self.window, width = 10) # 시/군/구 선택버튼
         self.city.place(x = 130, y = 80)
         self.InitInsert() # 선택창에 지역 넣어주기
+        self.do.bind("<<ComboboxSelected>>", self.ChangeDo)
 
         Button(self.window,text = "검색",bg = "pale violet red", command = self.Search).place(x = 360, y = 77) #지역 검색 버튼
         Button(self.window,text = "갱신", bg ="pale violet red", command = self.Refresh).place(x = 400, y= 77) #관광지 선택시 관광지 정보 갱신
