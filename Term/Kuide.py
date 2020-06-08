@@ -3,6 +3,8 @@ from tkinter import ttk #combobox 용
 
 import OpenApiDo
 import OpenApiSigungu
+import OpenApiParsing
+from TourInformation import  *
 
 class MainGUI:
     def SendEmail(self): #이메일 전송
@@ -35,12 +37,44 @@ class MainGUI:
     def Search(self): #combobox로부터 선택된 값을 얻어와 해당 지역의 관광지를 listbox로 뽑음
         #리스트 박스에 해당 지역의 유명 관광지 xml로부터 이름 불러와 insert
         DoCode = OpenApiDo.getSidoCode(self.do.get())
-        SigunguCode = OpenApiSigungu.getSigunguCode(self.city.get())
+        SigunguCode = OpenApiSigungu.getSigunguCode(self.city.get(),DoCode)
+        tourist = OpenApiParsing.getTouristList(DoCode,SigunguCode)
+        self.TouristDestination.delete(0,END)
+        for i in range(len(tourist)):
+            self.TouristDestination.insert(0, tourist[i])
+
 
     def ChangeDo(self,event): #Do 콤보박스 내용 바꿨을 때-> 시군구 콤보박스 내용 바꾸기
         code = OpenApiDo.getSidoCode(self.do.get())
         self.city['value'] = OpenApiSigungu.getSigunguList(code)
         self.city.current(0)
+        self.InfoandbookmarkList.delete(0,END)
+
+
+    def ChangeTourInfo(self, event):
+        DoCode = OpenApiDo.getSidoCode(self.do.get())
+        SigunguCode = OpenApiSigungu.getSigunguCode(self.city.get(), DoCode)
+        item = OpenApiParsing.getTouristInfo(DoCode,SigunguCode, self.TouristDestination.get(self.TouristDestination.curselection()))
+        self.InfoandbookmarkList.delete(0,END)
+
+        self.curinfo = TourInfo(item)
+        index = 0
+        self.InfoandbookmarkList.insert(index, "<"+self.TouristDestination.get(self.TouristDestination.curselection()) +">")
+        if self.curinfo.addr1 != None :
+            index+=1
+            self.InfoandbookmarkList.insert(index, "주소: " + str(self.curinfo.addr1))
+        if self.curinfo.addr2 != None:
+            index+=1
+            self.InfoandbookmarkList.insert(index, "상세 주소: " + str(self.curinfo.addr2))
+        if self.curinfo.readcount != None:
+            index+=1
+            self.InfoandbookmarkList.insert(index, "조회수: " + str(self.curinfo.readcount))
+        if self.curinfo.x != None:
+            index+=1
+            self.InfoandbookmarkList.insert(index, "GPS: " + str(self.curinfo.x) + ", " + str(self.curinfo.y))
+        if self.curinfo.telephone != None:
+            index+=1
+            self.InfoandbookmarkList.insert(index, "전화번호: " + str(self.curinfo.telephone))
 
     def __init__(self):
         self.window = Tk()
@@ -48,7 +82,6 @@ class MainGUI:
         self.window.title("Kuide")
         self.window.geometry('1280x720')
         self.window.configure(bg= "light pink")
-
 
         Label(self.window, text = "도",bg= "light pink").place(x = 20, y = 50) #충청남도 할때 도
         Label(self.window, text = "시/군/구",bg= "light pink").place(x= 130, y = 50) #시,군,구
@@ -62,12 +95,15 @@ class MainGUI:
         Button(self.window,text = "검색",bg = "pale violet red", command = self.Search).place(x = 360, y = 77) #지역 검색 버튼
         Button(self.window,text = "갱신", bg ="pale violet red", command = self.Refresh).place(x = 400, y= 77) #관광지 선택시 관광지 정보 갱신
 
-        self.TouristDestination = Listbox(self.window, selectmode = 'multiple', width = 60, height= 30) #관광지 리스트
+        self.TouristDestination = Listbox(self.window, selectmode = 'single', width = 60, height= 30) #관광지 리스트
         self.TouristDestination.place(x= 20, y = 120)
+        self.TouristDestination.bind('<<ListboxSelect>>', self.ChangeTourInfo)
         self.information = Button(self.window, text = "정보", bg = "pink", width = 8, command = self.Information) #정보 버튼
         self.information.place(x =  500, y =95)
         self.bookmark = Button(self.window, text = "북마크", bg = "pink", width = 8, command = self.Bookmark) #북마크 버튼
         self.bookmark.place(x = 568, y=95)
+
+        self.Infotext = []
 
         self.InfoandbookmarkList = Listbox(self.window, selectmode = 'multiple', width = 60, height = 15)#정보,북마크버튼 및의 정보 띄워주는 창
         self.InfoandbookmarkList.place(x = 500, y = 120)
