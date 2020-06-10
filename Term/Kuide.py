@@ -4,19 +4,45 @@ from tkinter import ttk #combobox 용
 import OpenApiDo
 import OpenApiSigungu
 import OpenApiParsing
+import Gmail
 from TourInformation import  *
 
 class MainGUI:
     def SendEmail(self): #이메일 전송
-        pass
-    
-    def CheckBookmark(self): #북마크 버튼눌렀을 때/
-        pass
+        #if self.InfoandbookmarkList.size() == 0:
+        #    return
+        self.Message = "지은"
 
-    def Bookmark(self): #북마크 띄우기
+        #for i in range(self.InfoandbookmarkList.size()):
+        #    self.Message += self.InfoandbookmarkList.get(i) + "\n"
+
+        self.emailwindow = Tk()
+        self.emailwindow.title("Email")
+        self.emailwindow.geometry('200x150')
+        self.emailwindow.configure(bg="pale violet red")
+
+        Label(self.emailwindow,text = "Email",bg="pale violet red").place(x = 80, y = 40)
+        self.emailEntry = Entry(self.emailwindow, width = 20)
+        self.emailEntry.place(x=5, y = 60)
+        Button(self.emailwindow, text = "보내기", command=self.SendGmail, bg = "pink").place(x = 151, y = 55)
+
+        self.emailwindow.mainloop()
+    def SendGmail(self):
+        Gmail.SendGmail(self.emailEntry.get(), self.Message)
+
+    def CheckBookmark(self): #북마크 버튼눌렀을 때
+        self.bookmarkDo.append(OpenApiDo.getSidoCode(self.do.get()))
+        self.bookmarkSigungu.append(OpenApiSigungu.getSigunguCode(self.city.get(),self.bookmarkDo))
+        self.bookmarklist.append(self.TouristDestination.get(self.TouristDestination.curselection()))
+
+    def Bookmark(self): #북마크 리스트 띄우기
         self.bookmark['state'] = DISABLED
         self.information['state'] = NORMAL
-        #canvas 초기화하고 book리스트보여주기
+        self.TouristDestination.delete(0,END)
+
+        for i in range(len(self.bookmarklist)):
+            self.TouristDestination.insert(i, self.bookmarklist[i])
+        pass
 
     def Information(self): # 정보 띄우기
         self.bookmark['state'] = NORMAL
@@ -53,14 +79,19 @@ class MainGUI:
         self.city.current(0)
         self.InfoandbookmarkList.delete(0,END)
 
-
     def ChangeTourInfo(self, event):
-        DoCode = OpenApiDo.getSidoCode(self.do.get())
-        SigunguCode = OpenApiSigungu.getSigunguCode(self.city.get(), DoCode)
-        item = OpenApiParsing.getTouristInfo(DoCode,SigunguCode, self.TouristDestination.get(self.TouristDestination.curselection()))
-        self.InfoandbookmarkList.delete(0,END)
+        if self.information['state'] == NORMAL:
+            DoCode = OpenApiDo.getSidoCode(self.do.get())
+            SigunguCode = OpenApiSigungu.getSigunguCode(self.city.get(), DoCode)
+            item = OpenApiParsing.getTouristInfo(DoCode,SigunguCode, self.TouristDestination.get(self.TouristDestination.curselection()))
+            self.InfoandbookmarkList.delete(0,END)
+            self.curinfo = TourInfo(item)
 
-        self.curinfo = TourInfo(item)
+        else:
+            item = OpenApiParsing.getTouristInfo(self.bookmarkDo[self.TouristDestination.curselection()], self.bookmarkSigungu[self.TouristDestination.curselection()],self.TouristDestination.get(self.TouristDestination.curselection()))
+            self.InfoandbookmarkList.delete(0, END)
+            self.curinfo = TourInfo(item)
+
         index = 0
         self.InfoandbookmarkList.insert(index, "<"+self.TouristDestination.get(self.TouristDestination.curselection()) +">")
         if self.curinfo.addr1 != None :
@@ -83,7 +114,7 @@ class MainGUI:
         self.window = Tk()
         self.window.iconbitmap("Resource/Kuide.ico")
         self.window.title("Kuide")
-        self.window.geometry('1280x720')
+        self.window.geometry('1024x768')
         self.window.configure(bg= "light pink")
 
         Label(self.window, text = "도",bg= "light pink").place(x = 20, y = 50) #충청남도 할때 도
@@ -117,6 +148,9 @@ class MainGUI:
         #0601추가_북마크버튼
         self.PhotoBookmark = PhotoImage(file='Resource/BookmarkButton.png')
         Button(self.window, image = self.PhotoBookmark, command = self.CheckBookmark, bg = "pink").place(x = 840, y=85)
+        self.bookmarkDo = []
+        self.bookmarkSigungu = []
+        self.bookmarklist = []
 
         #0601추가_이메일전송버튼
         self.PhotoEmail = PhotoImage(file='Resource/Email.png')
