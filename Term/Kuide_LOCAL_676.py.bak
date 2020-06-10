@@ -5,13 +5,12 @@ import OpenApiDo
 import OpenApiSigungu
 import OpenApiParsing
 from TourInformation import *
-import DrawMap
 import Gmail
-from TourInformation import  *
+import DrawMap
 
 
 class MainGUI:
-    def SendEmail(self): #이메일 전송
+    def SendEmail(self): # 이메일 전송
         if self.InfoandbookmarkList.size() == 0:
             return
         self.Message = ""
@@ -33,19 +32,21 @@ class MainGUI:
     def SendGmail(self):
         Gmail.SendGmail(self.emailEntry.get(), self.Message)
 
-    def CheckBookmark(self): #북마크 버튼눌렀을 때
+    def CheckBookmark(self):  # 북마크 버튼눌렀을 때
         do = OpenApiDo.getSidoCode(self.do.get())
         self.bookmarkDo.append(do)
         self.bookmarkSigungu.append(OpenApiSigungu.getSigunguCode(self.city.get(),do))
         self.bookmarklist.append(self.TouristDestination.get(self.TouristDestination.index(self.TouristDestination.curselection())))
+        pass
 
-    def Bookmark(self): #북마크 리스트 띄우기
+    def Bookmark(self): # 북마크 리스트 띄우기
         self.bookmark['state'] = DISABLED
         self.information['state'] = NORMAL
         self.TouristDestination.delete(0,END)
 
         for i in range(len(self.bookmarklist)):
             self.TouristDestination.insert(i, self.bookmarklist[i])
+
 
     def Information(self): # 정보 띄우기
         self.bookmark['state'] = NORMAL
@@ -67,8 +68,8 @@ class MainGUI:
     def Refresh(self): # 관광지 리스트박스에서 선택 후 누르면 정보 창의 정보 갱신
         pass
 
-    def Search(self): #combobox로부터 선택된 값을 얻어와 해당 지역의 관광지를 listbox로 뽑음
-        #리스트 박스에 해당 지역의 유명 관광지 xml로부터 이름 불러와 insert
+    def Search(self): # combobox로부터 선택된 값을 얻어와 해당 지역의 관광지를 listbox로 뽑음
+        # 리스트 박스에 해당 지역의 유명 관광지 xml로부터 이름 불러와 insert
         self.bookmark['state'] = NORMAL
         self.information['state'] = DISABLED
         DoCode = OpenApiDo.getSidoCode(self.do.get())
@@ -100,10 +101,9 @@ class MainGUI:
             item = OpenApiParsing.getTouristInfo(self.bookmarkDo[self.TouristDestination.index(self.TouristDestination.curselection())], self.bookmarkSigungu[self.TouristDestination.index(self.TouristDestination.curselection())],self.TouristDestination.get(self.TouristDestination.index(self.TouristDestination.curselection())))
             self.InfoandbookmarkList.delete(0, END)
             self.curinfo = TourInfo(item)
-
         index = 0
-        self.InfoandbookmarkList.insert(index, "<"+self.TouristDestination.get(self.TouristDestination.curselection()) +">")
-        if self.curinfo.addr1 != None:
+        self.InfoandbookmarkList.insert(index, "<"+self.TouristDestination.get(self.TouristDestination.index(self.TouristDestination.curselection())) +">")
+        if self.curinfo.addr1 != None :
             index+=1
             self.InfoandbookmarkList.insert(index, "주소: " + str(self.curinfo.addr1))
         if self.curinfo.addr2 != None:
@@ -134,7 +134,6 @@ class MainGUI:
         self.city.place(x = 130, y = 80)
         self.InitInsert() # 선택창에 지역 넣어주기
         self.do.bind("<<ComboboxSelected>>", self.ChangeDo)
-        self.city.bind("<<ComboboxSelected>>", self.ChangeSigungu)
 
         Button(self.window,text = "검색",bg = "pale violet red", command = self.Search).place(x = 360, y = 77) #지역 검색 버튼
         Button(self.window,text = "갱신", bg ="pale violet red", command = self.Refresh).place(x = 400, y= 77) #관광지 선택시 관광지 정보 갱신
@@ -158,9 +157,6 @@ class MainGUI:
         #0601추가_북마크버튼
         self.PhotoBookmark = PhotoImage(file='Resource/BookmarkButton.png')
         Button(self.window, image = self.PhotoBookmark, command = self.CheckBookmark, bg = "pink").place(x = 840, y=85)
-        self.bookmarkDo = []
-        self.bookmarkSigungu = []
-        self.bookmarklist = []
 
         #0601추가_이메일전송버튼
         self.PhotoEmail = PhotoImage(file='Resource/Email.png')
@@ -169,9 +165,6 @@ class MainGUI:
         #0610 지도 추가
         self.PhotoMap = PhotoImage(file='Resource/Map.png')
         Button(self.window, image= self.PhotoMap, bg="pink", command=self.OpenMap).place(x=800, y=85)
-
-        self.bookmark['state'] = NORMAL
-        self.information['state'] = DISABLED
 
         self.window.mainloop()
 
