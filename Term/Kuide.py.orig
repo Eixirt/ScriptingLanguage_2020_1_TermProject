@@ -4,11 +4,25 @@ from tkinter import ttk  # combobox 용
 import OpenApiDo
 import OpenApiSigungu
 import OpenApiParsing
+<<<<<<< HEAD
 from TourInformation import *
 import DrawMap
+
+
+class MainGUI:
+    def SendEmail(self):  # 이메일 전송
+        pass
+
+    def CheckBookmark(self):  # 북마크 버튼눌렀을 때/
+        pass
+
+    def Bookmark(self):  # 북마크 띄우기
+        self.bookmark['state'] = DISABLED
+        self.information['state'] = NORMAL
+        # canvas 초기화하고 book 리스트 보여주기
+=======
 import Gmail
 from TourInformation import  *
-
 
 class MainGUI:
     def SendEmail(self): #이메일 전송
@@ -47,6 +61,8 @@ class MainGUI:
         for i in range(len(self.bookmarklist)):
             self.TouristDestination.insert(i, self.bookmarklist[i])
 
+>>>>>>> 45313c471b6dfee0f3bd8efe7eca94dd76ba37f2
+
     def Information(self): # 정보 띄우기
         self.bookmark['state'] = NORMAL
         self.information['state'] = DISABLED
@@ -67,10 +83,15 @@ class MainGUI:
     def Refresh(self): # 관광지 리스트박스에서 선택 후 누르면 정보 창의 정보 갱신
         pass
 
+<<<<<<< HEAD
+    def Search(self): # combobox로부터 선택된 값을 얻어와 해당 지역의 관광지를 listbox로 뽑음
+        # 리스트 박스에 해당 지역의 유명 관광지 xml로부터 이름 불러와 insert
+=======
     def Search(self): #combobox로부터 선택된 값을 얻어와 해당 지역의 관광지를 listbox로 뽑음
         #리스트 박스에 해당 지역의 유명 관광지 xml로부터 이름 불러와 insert
         self.bookmark['state'] = NORMAL
         self.information['state'] = DISABLED
+>>>>>>> 45313c471b6dfee0f3bd8efe7eca94dd76ba37f2
         DoCode = OpenApiDo.getSidoCode(self.do.get())
         SigunguCode = OpenApiSigungu.getSigunguCode(self.city.get(),DoCode)
         tourist = OpenApiParsing.getTouristList(DoCode,SigunguCode)
@@ -89,11 +110,13 @@ class MainGUI:
         self.Search()
 
     def ChangeTourInfo(self, event):
+<<<<<<< HEAD
         DoCode = OpenApiDo.getSidoCode(self.do.get())
         SigunguCode = OpenApiSigungu.getSigunguCode(self.city.get(), DoCode)
         print(DoCode + " " + SigunguCode)
         item = OpenApiParsing.getTouristInfo(DoCode, SigunguCode, self.TouristDestination.get(self.TouristDestination.curselection()))
         self.InfoandbookmarkList.delete(0, END)
+=======
         if self.information['state'] == DISABLED:
             DoCode = OpenApiDo.getSidoCode(self.do.get())
             SigunguCode = OpenApiSigungu.getSigunguCode(self.city.get(), DoCode)
@@ -105,12 +128,16 @@ class MainGUI:
             item = OpenApiParsing.getTouristInfo(self.bookmarkDo[self.TouristDestination.index(self.TouristDestination.curselection())], self.bookmarkSigungu[self.TouristDestination.index(self.TouristDestination.curselection())],self.TouristDestination.get(self.TouristDestination.index(self.TouristDestination.curselection())))
             self.InfoandbookmarkList.delete(0, END)
             self.curinfo = TourInfo(item)
+>>>>>>> 45313c471b6dfee0f3bd8efe7eca94dd76ba37f2
 
         index = 0
+<<<<<<< HEAD
         self.InfoandbookmarkList.insert(index, "<"+self.TouristDestination.get(self.TouristDestination.curselection()) +">")
         if self.curinfo.addr1 != None:
+=======
         self.InfoandbookmarkList.insert(index, "<"+self.TouristDestination.get(self.TouristDestination.index(self.TouristDestination.curselection())) +">")
-        if self.curinfo.addr1 != None:
+        if self.curinfo.addr1 != None :
+>>>>>>> 45313c471b6dfee0f3bd8efe7eca94dd76ba37f2
             index+=1
             self.InfoandbookmarkList.insert(index, "주소: " + str(self.curinfo.addr1))
         if self.curinfo.addr2 != None:
