@@ -29,5 +29,4 @@ def getSigunguCode(sigungu, Docode):
     itemElement = tree.getiterator("item")
     for item in itemElement:
         if item.find("name").text == sigungu:
-            print(item.find("code").text)
             return item.find("code").text

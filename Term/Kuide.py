@@ -9,12 +9,12 @@ from TourInformation import  *
 
 class MainGUI:
     def SendEmail(self): #이메일 전송
-        #if self.InfoandbookmarkList.size() == 0:
-        #    return
-        self.Message = "지은"
+        if self.InfoandbookmarkList.size() == 0:
+            return
+        self.Message = ""
 
-        #for i in range(self.InfoandbookmarkList.size()):
-        #    self.Message += self.InfoandbookmarkList.get(i) + "\n"
+        for i in range(self.InfoandbookmarkList.size()):
+            self.Message += self.InfoandbookmarkList.get(i) + "\n"
 
         self.emailwindow = Tk()
         self.emailwindow.title("Email")
@@ -31,9 +31,10 @@ class MainGUI:
         Gmail.SendGmail(self.emailEntry.get(), self.Message)
 
     def CheckBookmark(self): #북마크 버튼눌렀을 때
-        self.bookmarkDo.append(OpenApiDo.getSidoCode(self.do.get()))
-        self.bookmarkSigungu.append(OpenApiSigungu.getSigunguCode(self.city.get(),self.bookmarkDo))
-        self.bookmarklist.append(self.TouristDestination.get(self.TouristDestination.curselection()))
+        do = OpenApiDo.getSidoCode(self.do.get())
+        self.bookmarkDo.append(do)
+        self.bookmarkSigungu.append(OpenApiSigungu.getSigunguCode(self.city.get(),do))
+        self.bookmarklist.append(self.TouristDestination.get(self.TouristDestination.index(self.TouristDestination.curselection())))
 
     def Bookmark(self): #북마크 리스트 띄우기
         self.bookmark['state'] = DISABLED
@@ -42,7 +43,7 @@ class MainGUI:
 
         for i in range(len(self.bookmarklist)):
             self.TouristDestination.insert(i, self.bookmarklist[i])
-        pass
+
 
     def Information(self): # 정보 띄우기
         self.bookmark['state'] = NORMAL
@@ -65,6 +66,8 @@ class MainGUI:
 
     def Search(self): #combobox로부터 선택된 값을 얻어와 해당 지역의 관광지를 listbox로 뽑음
         #리스트 박스에 해당 지역의 유명 관광지 xml로부터 이름 불러와 insert
+        self.bookmark['state'] = NORMAL
+        self.information['state'] = DISABLED
         DoCode = OpenApiDo.getSidoCode(self.do.get())
         SigunguCode = OpenApiSigungu.getSigunguCode(self.city.get(),DoCode)
         tourist = OpenApiParsing.getTouristList(DoCode,SigunguCode)
@@ -79,21 +82,24 @@ class MainGUI:
         self.city.current(0)
         self.InfoandbookmarkList.delete(0,END)
 
+    def ChangeSigungu(self, event): #시군구 콤보박스 내용 바꿨을 때-> 시군구 콤보박스 내용 바꾸기
+        self.Search()
+
     def ChangeTourInfo(self, event):
-        if self.information['state'] == NORMAL:
+        if self.information['state'] == DISABLED:
             DoCode = OpenApiDo.getSidoCode(self.do.get())
             SigunguCode = OpenApiSigungu.getSigunguCode(self.city.get(), DoCode)
-            item = OpenApiParsing.getTouristInfo(DoCode,SigunguCode, self.TouristDestination.get(self.TouristDestination.curselection()))
+            item = OpenApiParsing.getTouristInfo(DoCode,SigunguCode, self.TouristDestination.get(self.TouristDestination.index(self.TouristDestination.curselection())))
             self.InfoandbookmarkList.delete(0,END)
             self.curinfo = TourInfo(item)
 
         else:
-            item = OpenApiParsing.getTouristInfo(self.bookmarkDo[self.TouristDestination.curselection()], self.bookmarkSigungu[self.TouristDestination.curselection()],self.TouristDestination.get(self.TouristDestination.curselection()))
+            item = OpenApiParsing.getTouristInfo(self.bookmarkDo[self.TouristDestination.index(self.TouristDestination.curselection())], self.bookmarkSigungu[self.TouristDestination.index(self.TouristDestination.curselection())],self.TouristDestination.get(self.TouristDestination.index(self.TouristDestination.curselection())))
             self.InfoandbookmarkList.delete(0, END)
             self.curinfo = TourInfo(item)
 
         index = 0
-        self.InfoandbookmarkList.insert(index, "<"+self.TouristDestination.get(self.TouristDestination.curselection()) +">")
+        self.InfoandbookmarkList.insert(index, "<"+self.TouristDestination.get(self.TouristDestination.index(self.TouristDestination.curselection())) +">")
         if self.curinfo.addr1 != None :
             index+=1
             self.InfoandbookmarkList.insert(index, "주소: " + str(self.curinfo.addr1))
@@ -125,6 +131,7 @@ class MainGUI:
         self.city.place(x = 130, y = 80)
         self.InitInsert() # 선택창에 지역 넣어주기
         self.do.bind("<<ComboboxSelected>>", self.ChangeDo)
+        self.city.bind("<<ComboboxSelected>>", self.ChangeSigungu)
 
         Button(self.window,text = "검색",bg = "pale violet red", command = self.Search).place(x = 360, y = 77) #지역 검색 버튼
         Button(self.window,text = "갱신", bg ="pale violet red", command = self.Refresh).place(x = 400, y= 77) #관광지 선택시 관광지 정보 갱신
@@ -159,6 +166,9 @@ class MainGUI:
         #0610 지도 추가
         self.PhotoMap = PhotoImage(file='Resource/Map.png')
         Button(self.window, image= self.PhotoMap, bg="pink", command=self.Map).place(x=800, y=85)
+
+        self.bookmark['state'] = NORMAL
+        self.information['state'] = DISABLED
 
         self.window.mainloop()
 
