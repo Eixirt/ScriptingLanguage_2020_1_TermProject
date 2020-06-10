@@ -1,29 +1,31 @@
 from tkinter import *
-from tkinter import ttk #combobox 용
+from tkinter import ttk  # combobox 용
 
 import OpenApiDo
 import OpenApiSigungu
 import OpenApiParsing
-from TourInformation import  *
+from TourInformation import *
+import DrawMap
+
 
 class MainGUI:
-    def SendEmail(self): #이메일 전송
-        pass
-    
-    def CheckBookmark(self): #북마크 버튼눌렀을 때/
+    def SendEmail(self):  # 이메일 전송
         pass
 
-    def Bookmark(self): #북마크 띄우기
+    def CheckBookmark(self):  # 북마크 버튼눌렀을 때/
+        pass
+
+    def Bookmark(self):  # 북마크 띄우기
         self.bookmark['state'] = DISABLED
         self.information['state'] = NORMAL
-        #canvas 초기화하고 book리스트보여주기
+        # canvas 초기화하고 book 리스트 보여주기
 
     def Information(self): # 정보 띄우기
         self.bookmark['state'] = NORMAL
         self.information['state'] = DISABLED
         # canvas 초기화하고 Info리스트보여주기
 
-    def InitInsert(self): #지역들 xml로부터 읽어와 combobox에 넣어주기 self.do, self.city
+    def InitInsert(self):  # 지역들 xml로부터 읽어와 combobox에 넣어주기 self.do, self.city
         dolist = ['경기도','강원도','충청북도','충청남도','전라북도',
                   '전라남도','경상북도','경상남도', '서울','제주도',
                   '부산','대구','인천','광주','대전','울산','세종특별자치시']
@@ -31,7 +33,8 @@ class MainGUI:
         self.do['value'] = dolist
         self.do.current(0)
 
-    def Map(self): #여기서 지도 띄우기
+    def OpenMap(self):  # 여기서 지도 띄우기
+        DrawMap.OpenBrowerForMap()
         pass
     
     def Refresh(self): # 관광지 리스트박스에서 선택 후 누르면 정보 창의 정보 갱신
@@ -63,7 +66,7 @@ class MainGUI:
         self.curinfo = TourInfo(item)
         index = 0
         self.InfoandbookmarkList.insert(index, "<"+self.TouristDestination.get(self.TouristDestination.curselection()) +">")
-        if self.curinfo.addr1 != None :
+        if self.curinfo.addr1 != None:
             index+=1
             self.InfoandbookmarkList.insert(index, "주소: " + str(self.curinfo.addr1))
         if self.curinfo.addr2 != None:
@@ -83,7 +86,7 @@ class MainGUI:
         self.window = Tk()
         self.window.iconbitmap("Resource/Kuide.ico")
         self.window.title("Kuide")
-        self.window.geometry('1280x720')
+        self.window.geometry('1024x768')
         self.window.configure(bg= "light pink")
 
         Label(self.window, text = "도",bg= "light pink").place(x = 20, y = 50) #충청남도 할때 도
@@ -124,8 +127,9 @@ class MainGUI:
 
         #0610 지도 추가
         self.PhotoMap = PhotoImage(file='Resource/Map.png')
-        Button(self.window, image= self.PhotoMap, bg="pink", command=self.Map).place(x=800, y=85)
+        Button(self.window, image= self.PhotoMap, bg="pink", command=self.OpenMap).place(x=800, y=85)
 
         self.window.mainloop()
+
 
 MainGUI()
