@@ -31,6 +31,9 @@ class MainGUI:
         self.do['value'] = dolist
         self.do.current(0)
 
+    def Map(self): #여기서 지도 띄우기
+        pass
+    
     def Refresh(self): # 관광지 리스트박스에서 선택 후 누르면 정보 창의 정보 갱신
         pass
 
@@ -111,10 +114,6 @@ class MainGUI:
         self.Picture = Canvas(self.window, width = 420, height = 210) #관광지 이미지
         self.Picture.place(x = 500, y =  390)
 
-        Label(self.window, text= "지도",bg= "light pink").place(x =  950, y =95)
-        self.Map = Canvas(self.window, width = 300, height = 450) #지도
-        self.Map.place(x = 950, y = 120)
-
         #0601추가_북마크버튼
         self.PhotoBookmark = PhotoImage(file='Resource/BookmarkButton.png')
         Button(self.window, image = self.PhotoBookmark, command = self.CheckBookmark, bg = "pink").place(x = 840, y=85)
@@ -122,6 +121,10 @@ class MainGUI:
         #0601추가_이메일전송버튼
         self.PhotoEmail = PhotoImage(file='Resource/Email.png')
         Button(self.window, image = self.PhotoEmail, command = self.SendEmail, bg = "pink").place(x = 880, y = 85)
+
+        #0610 지도 추가
+        self.PhotoMap = PhotoImage(file='Resource/Map.png')
+        Button(self.window, image= self.PhotoMap, bg="pink", command=self.Map).place(x=800, y=85)
 
         self.window.mainloop()
 
