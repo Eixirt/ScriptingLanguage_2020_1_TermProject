@@ -34,14 +34,14 @@ class MainGUI:
         self.do.current(0)
 
     def OpenMap(self):  # 여기서 지도 띄우기
-        DrawMap.OpenBrowerForMap()
+        DrawMap.OpenBrowserForMap(self.curinfo.x, self.curinfo.y, 18, self.curinfo.title)
         pass
     
     def Refresh(self): # 관광지 리스트박스에서 선택 후 누르면 정보 창의 정보 갱신
         pass
 
-    def Search(self): #combobox로부터 선택된 값을 얻어와 해당 지역의 관광지를 listbox로 뽑음
-        #리스트 박스에 해당 지역의 유명 관광지 xml로부터 이름 불러와 insert
+    def Search(self): # combobox로부터 선택된 값을 얻어와 해당 지역의 관광지를 listbox로 뽑음
+        # 리스트 박스에 해당 지역의 유명 관광지 xml로부터 이름 불러와 insert
         DoCode = OpenApiDo.getSidoCode(self.do.get())
         SigunguCode = OpenApiSigungu.getSigunguCode(self.city.get(),DoCode)
         tourist = OpenApiParsing.getTouristList(DoCode,SigunguCode)
@@ -50,18 +50,19 @@ class MainGUI:
             self.TouristDestination.insert(0, tourist[i])
 
 
-    def ChangeDo(self,event): #Do 콤보박스 내용 바꿨을 때-> 시군구 콤보박스 내용 바꾸기
+    def ChangeDo(self,event):  # Do 콤보박스 내용 바꿨을 때-> 시군구 콤보박스 내용 바꾸기
         code = OpenApiDo.getSidoCode(self.do.get())
         self.city['value'] = OpenApiSigungu.getSigunguList(code)
         self.city.current(0)
-        self.InfoandbookmarkList.delete(0,END)
+        self.InfoandbookmarkList.delete(0, END)
 
 
     def ChangeTourInfo(self, event):
         DoCode = OpenApiDo.getSidoCode(self.do.get())
         SigunguCode = OpenApiSigungu.getSigunguCode(self.city.get(), DoCode)
-        item = OpenApiParsing.getTouristInfo(DoCode,SigunguCode, self.TouristDestination.get(self.TouristDestination.curselection()))
-        self.InfoandbookmarkList.delete(0,END)
+        print(DoCode + " " + SigunguCode)
+        item = OpenApiParsing.getTouristInfo(DoCode, SigunguCode, self.TouristDestination.get(self.TouristDestination.curselection()))
+        self.InfoandbookmarkList.delete(0, END)
 
         self.curinfo = TourInfo(item)
         index = 0

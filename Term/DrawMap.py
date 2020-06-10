@@ -4,14 +4,17 @@ import webbrowser
 import folium
 
 
-def OpenBrowerForMap(mapx, mapy, zoom_start_val, title):
+def OpenBrowserForMap(mapx, mapy, zoom_start_val, title):
     # 위도 경도 지정
-    map_osm = folium.Map(location=[mapx, mapy], zoom_start=zoom_start_val)
+    mapx = float(mapx)
+    mapy = float(mapy)
+
+    map_osm = folium.Map(location=[float(mapy), float(mapx)], zoom_start=zoom_start_val)
     # 마커 지정
-    folium.Marker([37.3402849, 126.7313189], popup=title).add_to(map_osm)
+    folium.Marker([float(mapy), float(mapx)], popup=title).add_to(map_osm)
     # html 파일로 저장
     map_osm.save('osm.html')
-    webbrowser.open_new('osm_html')
+    webbrowser.open_new('osm.html')
     pass
 
 
