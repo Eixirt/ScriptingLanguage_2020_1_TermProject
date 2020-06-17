@@ -9,6 +9,10 @@ import DrawMap
 import Gmail
 from TourInformation import  *
 
+from io import  BytesIO #이미지
+import urllib
+import urllib.request #이미지
+from PIL import Image, ImageTk # 이미지
 
 class MainGUI:
     def SendEmail(self): #이메일 전송
@@ -89,6 +93,7 @@ class MainGUI:
         self.Search()
 
     def ChangeTourInfo(self, event):
+        self.ImageLabel.img = self.PhotoBasic
         if self.information['state'] == DISABLED:
             DoCode = OpenApiDo.getSidoCode(self.do.get())
             SigunguCode = OpenApiSigungu.getSigunguCode(self.city.get(), DoCode)
@@ -118,6 +123,16 @@ class MainGUI:
         if self.curinfo.telephone != None:
             index+=1
             self.InfoandbookmarkList.insert(index, "전화번호: " + str(self.curinfo.telephone))
+        if self.curinfo.image != None:
+            urllib.request.urlretrieve(self.curinfo.image, "tour.jpg")
+            Tourimage = Image.open("tour.jpg")
+            Tourimage = Tourimage.resize((420,210))
+            TourPhoto = ImageTk.PhotoImage(Tourimage)
+
+            self.ImageLabel = Label(self.Picture, image = TourPhoto, width = 420, height = 210)
+            self.ImageLabel.img = TourPhoto
+            self.ImageLabel.place(x=0,y=0)
+
 
     def __init__(self):
         self.window = Tk()
@@ -169,6 +184,11 @@ class MainGUI:
         #0610 지도 추가
         self.PhotoMap = PhotoImage(file='Resource/Map.png')
         Button(self.window, image= self.PhotoMap, bg="pink", command=self.OpenMap).place(x=800, y=85)
+
+        #0617 대표이미지
+        self.ImageLabel = Label(self.Picture, width=420, height=210)
+        self.ImageLabel.place(x=0, y=0)
+        self.PhotoBasic = PhotoImage(file='Resource/BasicImage.png')
 
         self.bookmark['state'] = NORMAL
         self.information['state'] = DISABLED
