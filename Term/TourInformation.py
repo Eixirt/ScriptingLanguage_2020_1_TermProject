@@ -26,6 +26,7 @@ class TourInfo:
             self.readcount =iter.find("readcount").text
             pass
         if iter.find("firstimage") is not None:
+            print("image url")
             self.image =iter.find("firstimage").text
             pass
         if iter.find("addr1") is not None:
@@ -34,7 +35,6 @@ class TourInfo:
         if iter.find("addr2") is not None:
             self.addr2 =iter.find("addr2").text
             pass
-
 
         # if iter.find("title") != None: #이름
         #     self.title =iter.find("title").text
