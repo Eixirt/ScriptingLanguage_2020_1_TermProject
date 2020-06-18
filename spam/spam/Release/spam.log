@@ -1,0 +1,9 @@
+﻿  spammodule.c
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1274,5): warning MSB8012: TargetPath(C:\Users\Jieun\Desktop\spam\Release\spam.dll) does not match the Linker's OutputFile property value (C:\Users\Jieun\Desktop\spam\Release\spam.pyd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1275,5): warning MSB8012: TargetExt(.dll) does not match the Linker's OutputFile property value (.pyd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     C:\Users\Jieun\Desktop\spam\Release\spam.lib 라이브러리 및 C:\Users\Jieun\Desktop\spam\Release\spam.exp 개체를 생성하고 있습니다.
+  코드를 생성하고 있습니다.
+  Previous IPDB not found, fall back to full compilation.
+  All 2 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  코드를 생성했습니다.
+  spam.vcxproj -> C:\Users\Jieun\Desktop\spam\Release\spam.dll

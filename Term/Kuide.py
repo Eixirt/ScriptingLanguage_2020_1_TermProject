@@ -14,6 +14,8 @@ import urllib
 import urllib.request #이미지
 from PIL import Image, ImageTk # 이미지
 
+import spam #C/C++연동
+
 class MainGUI:
     def SendEmail(self): #이메일 전송
         if self.InfoandbookmarkList.size() == 0:
@@ -109,19 +111,19 @@ class MainGUI:
         index = 0
         self.InfoandbookmarkList.insert(index, "<"+self.TouristDestination.get(self.TouristDestination.curselection()) +">")
         if self.curinfo.addr1 != None:
-            index+=1
+            index = spam.myadd(index)
             self.InfoandbookmarkList.insert(index, "주소: " + str(self.curinfo.addr1))
         if self.curinfo.addr2 != None:
-            index+=1
+            index = spam.myadd(index)
             self.InfoandbookmarkList.insert(index, "상세 주소: " + str(self.curinfo.addr2))
         if self.curinfo.readcount != None:
-            index+=1
+            index = spam.myadd(index)
             self.InfoandbookmarkList.insert(index, "조회수: " + str(self.curinfo.readcount))
         if self.curinfo.x != None:
-            index+=1
+            index = spam.myadd(index)
             self.InfoandbookmarkList.insert(index, "GPS: " + str(self.curinfo.x) + ", " + str(self.curinfo.y))
         if self.curinfo.telephone != None:
-            index+=1
+            index = spam.myadd(index)
             self.InfoandbookmarkList.insert(index, "전화번호: " + str(self.curinfo.telephone))
         if self.curinfo.image != None:
             urllib.request.urlretrieve(self.curinfo.image, "tour.jpg")
