@@ -13,8 +13,9 @@ from io import  BytesIO #이미지
 import urllib
 import urllib.request #이미지
 from PIL import Image, ImageTk # 이미지
+import LinkTelegram
 
-import spam #C/C++연동
+# import spam #C/C++연동
 
 class MainGUI:
     def SendEmail(self): #이메일 전송
@@ -70,7 +71,11 @@ class MainGUI:
         DrawMap.OpenBrowserForMap(self.curinfo.x, self.curinfo.y, 18, self.curinfo.title)
         pass
     
-    def Refresh(self): # 관광지 리스트박스에서 선택 후 누르면 정보 창의 정보 갱신
+    def OpenTelegram(self):  # 텔레그램 오픈
+        LinkTelegram.StartTelegram()
+        pass
+    
+    def Refresh(self):  # 관광지 리스트박스에서 선택 후 누르면 정보 창의 정보 갱신
         pass
 
     def Search(self): #combobox로부터 선택된 값을 얻어와 해당 지역의 관광지를 listbox로 뽑음
@@ -88,6 +93,7 @@ class MainGUI:
     def ChangeDo(self,event):  # Do 콤보박스 내용 바꿨을 때-> 시군구 콤보박스 내용 바꾸기
         code = OpenApiDo.getSidoCode(self.do.get())
         self.city['value'] = OpenApiSigungu.getSigunguList(code)
+        # print(self.city['value'])
         self.city.current(0)
         self.InfoandbookmarkList.delete(0, END)
 
@@ -111,19 +117,19 @@ class MainGUI:
         index = 0
         self.InfoandbookmarkList.insert(index, "<"+self.TouristDestination.get(self.TouristDestination.curselection()) +">")
         if self.curinfo.addr1 != None:
-            index = spam.myadd(index)
+            index += 1
             self.InfoandbookmarkList.insert(index, "주소: " + str(self.curinfo.addr1))
         if self.curinfo.addr2 != None:
-            index = spam.myadd(index)
+            index += 1
             self.InfoandbookmarkList.insert(index, "상세 주소: " + str(self.curinfo.addr2))
         if self.curinfo.readcount != None:
-            index = spam.myadd(index)
+            index += 1
             self.InfoandbookmarkList.insert(index, "조회수: " + str(self.curinfo.readcount))
         if self.curinfo.x != None:
-            index = spam.myadd(index)
+            index += 1
             self.InfoandbookmarkList.insert(index, "GPS: " + str(self.curinfo.x) + ", " + str(self.curinfo.y))
         if self.curinfo.telephone != None:
-            index = spam.myadd(index)
+            index += 1
             self.InfoandbookmarkList.insert(index, "전화번호: " + str(self.curinfo.telephone))
         if self.curinfo.image != None:
             urllib.request.urlretrieve(self.curinfo.image, "tour.jpg")
@@ -194,6 +200,10 @@ class MainGUI:
 
         self.bookmark['state'] = NORMAL
         self.information['state'] = DISABLED
+
+        # 0624 텔레그램대표이미지
+        self.TelegramBot = PhotoImage(file='Resource/TelegramBot.png')
+        self.TelegramButton = Button(self.window, image=self.TelegramBot, bg="pink", command=self.OpenTelegram).place(x=760, y=85)
 
         self.window.mainloop()
 
